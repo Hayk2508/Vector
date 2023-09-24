@@ -8,6 +8,7 @@ public:
 	Vector(size_t arr_size, T elem) :capacity_(arr_size), vec(new T[capacity_]) {
 		for (size_t i = 0; i < capacity_; ++i) {
 			vec[i] = elem;
+			vec[i] = null;
 			++size_;
 			}
 	}
