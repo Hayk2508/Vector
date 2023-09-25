@@ -10,6 +10,7 @@ public:
 			vec[i] = elem;
 			++size_;
 			--size_;
+			--size_;
 			}
 	}
 
