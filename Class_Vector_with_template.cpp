@@ -9,6 +9,7 @@ public:
 		for (size_t i = 0; i < capacity_; ++i) {
 			vec[i] = elem;
 			++size_;
+			--size_;
 			}
 	}
 
@@ -137,7 +138,7 @@ private:
 
 int main()
 {
-	
+		
 	
 }
 
