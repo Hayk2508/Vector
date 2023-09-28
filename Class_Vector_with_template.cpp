@@ -1,23 +1,25 @@
 #include <iostream>
-
+#include <vector>
 template <typename T>
 class Vector {
 public:
 	Vector() :capacity_(2), vec(new T[capacity_]) {}
-	Vector(size_t arr_size) :capacity_(arr_size),vec(new T[capacity_]) {}
+	Vector(size_t arr_size) :capacity_(arr_size), vec(new T[capacity_]) {}
 	Vector(size_t arr_size, T elem) :capacity_(arr_size), vec(new T[capacity_]) {
 		for (size_t i = 0; i < capacity_; ++i) {
 			vec[i] = elem;
 			++size_;
-			}
+		}
 	}
-
-	Vector(const Vector<T>& other) :capacity_(other.capacity_), size_(other.size_),vec(new T[capacity_]) {
+	std::istream& operator>>(std::istream& is) {
+		is >> this->at();
+	}
+	Vector(const Vector<T>& other) :capacity_(other.capacity_), size_(other.size_), vec(new T[capacity_]) {
 		for (size_t i = 0; i < size_; ++i) {
 			vec[i] = other.vec[i];
 		}
 	}
-	Vector(Vector<T>&& other):capacity_(other.capacity_),size_(other.size_) {
+	Vector(Vector<T>&& other) :capacity_(other.capacity_), size_(other.size_) {
 		if (other.vec != nullptr) {
 			vec = other.vec;
 		}
@@ -80,7 +82,7 @@ public:
 		else {
 			return vec[index];
 		}
-		
+
 	}
 	T& at(size_t index) {
 		if (index < 0 || index >= capacity_) {
@@ -97,7 +99,7 @@ public:
 			T* tmp = new T[capacity_];
 			for (size_t i = 0; i < size_; ++i) {
 				tmp[i] = std::move(vec[i]);
-			}			
+			}
 			delete[]vec;
 			vec = tmp;
 			tmp = nullptr;
@@ -119,13 +121,13 @@ public:
 		vec[size_] = x;
 		++size_;
 	}
-	
+
 
 	void pop_back() {
 		--size_;
 	}
 
-	void clear() {		
+	void clear() {
 		size_ = 0;
 	}
 private:
@@ -135,10 +137,32 @@ private:
 };
 
 
+
+Vector<int> mul(const Vector<int>& nums) {
+
+	Vector<int> result(nums.size(), 1);
+	//1 2 3 4
+
+	//1 1*1 1*2 1*2*3
+	int left = 1;
+	for (int i = 0; i < nums.size(); ++i) {
+		result[i] = left;
+		left *= nums[i];//
+	}
+	//1 1*1 1*2* 1*2*3
+	int right = 1;
+	for (int i = nums.size() - 1; i >= 0; --i) {
+		result[i] *= right;
+		right *= nums[i];
+	}
+	return result;
+}
+
 int main()
 {
-		
-	
+
+
+
 }
 
 
