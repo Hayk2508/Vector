@@ -11,15 +11,14 @@ public:
 			++size_;
 		}
 	}
-	std::istream& operator>>(std::istream& is) {
-		is >> this->at();
-	}
+
 	Vector(const Vector<T>& other) :capacity_(other.capacity_), size_(other.size_), vec(new T[capacity_]) {
 		for (size_t i = 0; i < size_; ++i) {
 			vec[i] = other.vec[i];
 		}
 	}
-	Vector(Vector<T>&& other) :capacity_(other.capacity_), size_(other.size_) {
+
+	Vector(Vector<T>&& other) :capacity_(other.capacity_), size_(other.size_), vec(nullptr) {
 		if (other.vec != nullptr) {
 			vec = other.vec;
 		}
@@ -29,7 +28,6 @@ public:
 	~Vector() {
 		delete[]vec;
 	}
-
 
 	Vector<T>& operator=(const Vector<T>& other) {
 		if (this == &other) {
@@ -121,7 +119,6 @@ public:
 		++size_;
 	}
 
-
 	void pop_back() {
 		--size_;
 	}
@@ -138,107 +135,80 @@ private:
 
 
 Vector<int> mul(const Vector<int>& nums) {
-
 	Vector<int> result(nums.size(), 1);
-	//1 2 3 4
-
-	//1 1*1 1*2 1*2*3
 	int left = 1;
-	for (int i = 0; i < nums.size(); ++i) {
+	for (size_t i = 0; i < nums.size(); ++i) {
 		result[i] = left;
-		left *= nums[i];//
+		left *= nums[i];
 	}
-	//1 1*1 1*2* 1*2*3
 	int right = 1;
-	for (int i = nums.size() - 1; i >= 0; --i) {
+	for (size_t i = nums.size() - 1; i >= 0; --i) {
 		result[i] *= right;
 		right *= nums[i];
 	}
 	return result;
 }
 
-void luckynums(Vector<Vector<int>> vec) {
-
-	//2 1 7
-	Vector<int> min_index;
-	Vector<int> max_index;
+Vector<int> luckynums(const  Vector<Vector<int>>& vec) {
+	Vector<int> min_row;
+	Vector<int> max_column;
 	Vector<int> res;
-	std::cout << vec[0][2];
-	//min = 2 min = 1 
-	/*
 	int min;
 	int max;
-	int k;//min index
-	bool ismax = true;
+
 	if (vec.empty()) {
 		throw std::invalid_argument("The Vector is empty!!!");
 	}
-	for (int i = 0; i < vec.capacity(); ++i) {
+
+	for (size_t i = 0; i < vec.capacity(); ++i) {
 		min = vec[i][0];
-		k = 0;
-		for (int j = 1; j < vec[i].size(); ++j) {
+		for (size_t j = 1; j < vec[i].size(); ++j) {
 			if (vec[i][j] < min) {
-				k = j;
 				min = vec[i][j];
 			}
-			else {
-				continue;
-			}
 		}
-		min_index.push_back(k);
+		min_row.push_back(min);
 	}
-	for (int j = 0; j < vec.capacity(); ++j) {
+
+	for (size_t j = 0; j < vec.capacity(); ++j) {
 		max = vec[0][j];
-		k = 0;
-		for (int i = 1; i <= vec.capacity() - 1; ++i) {
+		for (size_t i = 1; i <= vec.capacity() - 1; ++i) {
 			if (vec[i][j] > max) {
 				max = vec[i][j];
-				k = i;
 			}
 		}
-		max_index.push_back(k);
+		max_column.push_back(max);
 	}
-	for (int i = 0; i < min_index.size(); ++i) {
-		if (min_index[i] == max_index[i]) {
-			res.push_back(vec[min_index[i]][max_index[i]]);
+
+	for (size_t i = 0; i < min_row.size(); ++i) {
+		for (size_t j = 0; j < min_row.size(); ++j) {
+			if (min_row[i] == max_column[j]) {
+				res.push_back(min_row[i]);
+			}
 		}
 	}
-
-
-		// min_index = 0 0 0   1 1 1
-		// max_index = 2 2 2   2 1 2
-
-		//1 4 7      8 2 5
-		//8 9 10	 9 1 2
-		//14 15 16   10 0 56
-
-
-
-
 	return res;
-	*/
 }
 
 int main()
 {
 	Vector<Vector<int>> a(3);
-	a[0].push_back(8);   //1 4 7
-	a[0].push_back(2);	// 8 9 10
-	a[0].push_back(5);	//14 15 16
-	a[1].push_back(9);	//
-	a[1].push_back(1);
-	a[1].push_back(2);
-	a[2].push_back(10);
-	a[2].push_back(0);
-	a[2].push_back(56);
-	std::cout << a[2][2] << " ";
-	//   luckynums(a);
-	Vector<Vector<int>> b;
-	b = a;
-	std::cout << b[2][2];
-
-
-
+	Vector<int> v(3);
+	Vector<int> c(3);
+	Vector<int> d(3);
+	v.push_back(8);
+	v.push_back(2);
+	v.push_back(5);
+	c.push_back(9);
+	c.push_back(1);
+	c.push_back(2);
+	d.push_back(10);
+	d.push_back(0);
+	d.push_back(56);
+	a.push_back(v);
+	a.push_back(c);
+	a.push_back(d);
+	std::cout << luckynums(a)[0];
 }
 
 
