@@ -4,7 +4,7 @@ template <typename T>
 class Vector {
 public:
 	Vector() :capacity_(2), vec(new T[capacity_]) {}
-	Vector(size_t arr_size) :capacity_(arr_size), vec(new T[capacity_]) {}
+	Vector(size_t arr_size) :capacity_(arr_size),size_(arr_size) vec(new T[capacity_]) {}
 	Vector(size_t arr_size, T elem) :capacity_(arr_size), vec(new T[capacity_]) {
 		for (size_t i = 0; i < capacity_; ++i) {
 			vec[i] = elem;
@@ -142,7 +142,7 @@ Vector<int> mul(const Vector<int>& nums) {
 		left *= nums[i];
 	}
 	int right = 1;
-	for (size_t i = nums.size() - 1; i >= 0; --i) {
+	for (int i = nums.size() - 1; i >= 0; --i) {
 		result[i] *= right;
 		right *= nums[i];
 	}
